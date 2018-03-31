@@ -18,7 +18,6 @@ contract ThailandBollot is ThailandMilitaryPower {
     mapping (address => bool) public candidates;
     address[] public candidateList;
     
-    
     // Voters
     address[] public voterList;
     mapping (address => Voter) public addressOfVoter;
@@ -29,7 +28,7 @@ contract ThailandBollot is ThailandMilitaryPower {
     uint256 public endTime;
     
     // Modifier
-    modifier inTimeForVote() {
+    modifier duringVoteTime() {
         require(now >= startTime && now <= endTime);
         _;
     }
@@ -65,7 +64,7 @@ contract ThailandBollot is ThailandMilitaryPower {
         proposals.push(new Proposal(msg.sender, _manifesto));
     }
     
-    function vote(address _toProposal) public inTimeForVote {
+    function vote(address _toProposal) public duringVoteTime {
         Voter storage voter = addressOfVoter[msg.sender];
         require(!voter.voted);
         require(_toProposal != address(0));
